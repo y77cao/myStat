@@ -13,11 +13,20 @@
 
 <div id="app">
 	<div id="tab">
-		<div id="page-visit-tab" v-on:click="showVisit;getData('pageviews')">Page visits</div>
+		<div id="page-visit-tab" v-on:click="showVisit">Page visits</div>
 	    <div id="time-spent-tab" v-on:click="showTime">Time spent</div>
 	</div>
 	<div id='content'>
-		<div id="page-visit-content" v-show="visitshown">{{pageviews}}</div>
+		<div id="page-visit-content" v-show="visitshown">
+			<div id="page-views">{{ pageviews }}</div>
+			<div id="cites">
+				<ul id="cite-list">
+                  <li v-for="(key, value) in citeList">
+                    {{ key }}: {{ value }}
+                  </li>
+                </ul>
+			</div>
+		</div>
 	    <div id="time-spent-content" v-show="timeshown">hehehe</div>
 	</div>
 	

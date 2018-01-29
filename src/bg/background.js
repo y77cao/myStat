@@ -8,15 +8,14 @@ chrome.runtime.onMessage.addListener(
         if(request.type) {
             switch(request.type) {
                 case "pageLoad":
-                    incrementStatistic('pageviews');
-                    if(request.domain) {}
-                    console.log("Page view calculator triggered");
+                    incrementValue('pageviews', 1);
+                    if(request.domain) incrementSubCategory('cites', request.domain, 1);
                     break;
             }
         }
         sendResponse();
 });
-
+/*
 function StatTracker(name, velocityEnabled) {
     this.name = name;
     this.timer = null;
@@ -39,7 +38,7 @@ function incrementStatistic(statisticName) {
     incrementValue(tracker.name, 1);
     statTrackers[statisticName] = tracker; //Just in case...
 }
-
+*/
 
 function incrementValue(storageKey, amount) {
     chrome.storage.sync.get(storageKey, function(result) {
@@ -52,6 +51,29 @@ function incrementValue(storageKey, amount) {
         var setter = {};
         setter[storageKey] = result;
         chrome.storage.sync.set(setter, function() {});
+    })
+
+}
+
+function incrementSubCategory(storageKey, domain, amount) {
+    chrome.storage.sync.get(storageKey, function(result) {
+        if(!result || !result[storageKey]) {
+            var setter = {};
+            setter[storageKey] = {};
+            setter[storageKey][domain] = 1;
+            chrome.storage.sync.set(setter, function() {});
+        } else {
+            var cites = result[storageKey];
+            if (!cites[domain]) {
+                cites[domain] = 1;
+            } else {
+                ++cites[domain];
+            }
+            var setter = {};
+            setter[storageKey] = cites;
+            chrome.storage.sync.set(setter, function() {});
+        }
+        console.log("Visited: "+ domain);
     })
 
 }
