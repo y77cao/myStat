@@ -1,0 +1,27 @@
+<!doctype html>
+<style type="text/css">
+	#app {
+		padding: 10px;
+		height: 200px;
+		width: 400px;
+		font-family: Helvetica, Ubuntu, Arial, sans-serif;
+	}
+	h1 {
+		font-size: 2em;
+	}
+</style>
+
+<div id="app">
+	<div id="tab">
+		<div id="page-visit-tab" v-on:click="showVisit;getData('pageviews')">Page visits</div>
+	    <div id="time-spent-tab" v-on:click="showTime">Time spent</div>
+	</div>
+	<div id='content'>
+		<div id="page-visit-content" v-show="visitshown">{{pageviews}}</div>
+	    <div id="time-spent-content" v-show="timeshown">hehehe</div>
+	</div>
+	
+</div>
+<script src="vue.js" type="text/javascript" charset="utf-8"></script>
+<script src="component.js"></script>
+<script src="Chart.bundle.min.js" type="text/javascript" charset="utf-8" async defer></script>
