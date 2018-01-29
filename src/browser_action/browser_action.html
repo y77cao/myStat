@@ -18,13 +18,15 @@
 	</div>
 	<div id='content'>
 		<div id="page-visit-content" v-show="visitshown">
-			<div id="page-views">{{ pageviews }}</div>
+			<div id="page-views">Total page views: {{ pageviews }}</div>
 			<div id="cites">
+				<!--
 				<ul id="cite-list">
-                  <li v-for="(key, value) in citeList">
-                    {{ key }}: {{ value }}
+                  <li v-for="i in citeList">
+                    {{ i[0] }}: {{ i[1] }}
                   </li>
-                </ul>
+                </ul> -->
+                <div id="container" style="width:100%; height:400px;"></div>
 			</div>
 		</div>
 	    <div id="time-spent-content" v-show="timeshown">hehehe</div>
@@ -32,5 +34,6 @@
 	
 </div>
 <script src="vue.js" type="text/javascript" charset="utf-8"></script>
+<script src="highcharts.js" type="text/javascript" charset="utf-8" async defer></script>
+<script src="rendercharts.js"></script>
 <script src="component.js"></script>
-<script src="Chart.bundle.min.js" type="text/javascript" charset="utf-8" async defer></script>
