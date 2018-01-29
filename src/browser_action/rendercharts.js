@@ -16,9 +16,6 @@ function renderBars(data) {
             },
         },
         yAxis: {
-            title: {
-                text: 'Websites'
-            },
             gridLineWidth: 0.5,
         },
         plotOptions: {
