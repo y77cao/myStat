@@ -12,14 +12,14 @@ function renderBars(data) {
             labels: {
             	align: 'left',
             	x: 2,
-            	y: -10
+            	y: -10,
             },
         },
         yAxis: {
             title: {
                 text: 'Websites'
             },
-            gridLineWidth: 0.5
+            gridLineWidth: 0.5,
         },
         plotOptions: {
            series: {

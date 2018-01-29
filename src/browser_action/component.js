@@ -35,12 +35,12 @@ var app = new Vue({
       for (var i = 0; i < len; ++i) {
         const item = sorted[i];
         if (i < 10) {
-          res.push([item[0], item[1]]);
+          res.push([item[0], +(item[1] / this.pageviews * 100).toFixed(2)]);
         } else {
           others += item[1];
         }
       }
-      res.push(["others", others]);
+      res.push(["others", +(others / this.pageviews * 100).toFixed(2)]);
       return res;
     },
     sortObject: function(obj) {
