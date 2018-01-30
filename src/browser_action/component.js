@@ -25,7 +25,7 @@ var app = new Vue({
     },
     saveResult: function(data) {
       if (typeof data === 'number') this.pageviews = data? data: 0;
-      else if (typeof data === 'object') this.citeList = data? renderBars(this.formatData(data)): [];
+      else if (typeof data === 'object') this.citeList = data && Object.keys(data).length >= 10? renderBars(this.formatData(data)): [];
     },
     formatData: function(data) {
       var sorted = this.sortObject(data);
