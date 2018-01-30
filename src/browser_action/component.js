@@ -6,8 +6,14 @@ var app = new Vue({
   	visitshown: true,
   	timeshown: false,
     pageviews: 0,
-    citeList: []
+    citeList: [],
+    visitsdisplay: 'Bars'
   },
+  watch: {
+    visitsdisplay: function(newv, oldv) {
+         this.displayData();
+      }
+    },
   methods: {
     showVisit: function () {
       this.visitshown = true;
@@ -25,7 +31,10 @@ var app = new Vue({
     },
     saveResult: function(data) {
       if (typeof data === 'number') this.pageviews = data? data: 0;
-      else if (typeof data === 'object') this.citeList = data && Object.keys(data).length >= 10? renderBars(this.formatData(data)): [];
+      else if (typeof data === 'object') {
+        this.citeList = data && Object.keys(data).length >= 10? this.formatData(data): [];
+        renderBars(this.citeList);
+      }
     },
     formatData: function(data) {
       var sorted = this.sortObject(data);
@@ -35,12 +44,12 @@ var app = new Vue({
       for (var i = 0; i < len; ++i) {
         const item = sorted[i];
         if (i < 10) {
-          res.push([item[0], +(item[1] / this.pageviews * 100).toFixed(2)]);
+          res.push([item[0], item[1]]);
         } else {
           others += item[1];
         }
       }
-      res.push(["others", +(others / this.pageviews * 100).toFixed(2)]);
+      res.push(["others", others]);
       return res;
     },
     sortObject: function(obj) {
@@ -51,6 +60,24 @@ var app = new Vue({
 
       sortable.sort(function(a, b) {return b[1] - a[1];});
       return sortable;
+    },
+    convertToPercentage: function(data) {
+      let res = data;
+      for (var i in res) {
+        i[1] = +((i[1] / this.pageviews * 100).toFixed(2));
+        console.log(i[1]);
+      }
+      return res;
+    },
+    displayData: function() {
+      switch (this.visitsdisplay) {
+        case 'Bars':
+          renderBars(this.citeList);
+          break;
+        case 'Pies':
+          renderPies(this.convertToPercentage(this.citeList));
+          break;
+      }
     }
   },
   created() {

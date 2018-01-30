@@ -9,9 +9,6 @@
 	h1 {
 		font-size: 2em;
 	}
-	.highcharts-credits {
-		color: #fff;
-	}
 </style>
 
 <div id="app">
@@ -22,6 +19,13 @@
 	<div id='content'>
 		<div id="page-visit-content" v-show="visitshown">
 		<!--	<div id="page-views">Total page views: {{ pageviews }}</div> -->
+		    <div id="select-display">
+		    	View as:
+		    	<select v-model="visitsdisplay">
+                  <option>Bars</option>
+                  <option>Pies</option>
+                </select>
+		    </div>
 			<div id="cites">
 				<!--
 				<ul id="cite-list">
@@ -29,7 +33,6 @@
                     {{ i[0] }}: {{ i[1] }}
                   </li>
                 </ul> -->
-                <div id="not-enough-data" v-if="citeList.length < 10">Need more data...collecting.</div>
                 <div id="container" style="width:100%; height:500px;"></div>
 			</div>
 		</div>
@@ -41,3 +44,9 @@
 <script src="highcharts.js" type="text/javascript" charset="utf-8" async defer></script>
 <script src="rendercharts.js"></script>
 <script src="component.js"></script>
+<style type="text/css">
+	text.highcharts-credits {
+		color: #fff !important;
+		fill: #fff !important;
+	}
+</style>
