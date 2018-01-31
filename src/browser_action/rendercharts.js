@@ -1,6 +1,10 @@
+const COLORS = ['#7a91f9', '#f9ad5c', '#72c8ff', '#c899ff', 
+                '#faa0ff', '#84e4ee', '#47edb0', '#c0ea27', 
+                '#ffb8aa', '#fff284', '#ff7777']
+
 function renderBars(data) {
 	var myChart = Highcharts.chart('container', {
-		    colors: ['#4ABDAC', '#FC4A1A', '#F7B733', '#DFDCE3'],
+		    colors: COLORS,
         chart: {
             type: 'bar'
         },
@@ -67,6 +71,7 @@ function renderPies(data) {
                   enabled: false,
                   format: '<b>{point.name}</b>: {point.percentage:.1f} %'
             },
+            colors: COLORS,
             showInLegend: true
           }
       },

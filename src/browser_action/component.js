@@ -61,21 +61,13 @@ var app = new Vue({
       sortable.sort(function(a, b) {return b[1] - a[1];});
       return sortable;
     },
-    convertToPercentage: function(data) {
-      let res = data;
-      for (var i in res) {
-        i[1] = +((i[1] / this.pageviews * 100).toFixed(2));
-        console.log(i[1]);
-      }
-      return res;
-    },
     displayData: function() {
       switch (this.visitsdisplay) {
         case 'Bars':
           renderBars(this.citeList);
           break;
         case 'Pies':
-          renderPies(this.convertToPercentage(this.citeList));
+          renderPies(this.citeList);
           break;
       }
     }
