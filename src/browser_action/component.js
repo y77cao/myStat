@@ -1,5 +1,4 @@
 //var renderBars = require('rendercharts').renderBars;
-
 var app = new Vue({
   el: '#app',
   data: {
