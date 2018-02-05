@@ -15,11 +15,20 @@ var userActive = true;
 /* Time spent */
 function updateTime(domain) {
     if (userActive) {
-        console.log('User is active on ' + domain;
+        console.log('User is active on ' + domain);
         chrome.storage.sync.get('cites', function(result) {
-            result['cites'][domain]['time'] += 1;
-
-            chrome.storage.sync.set(data);
+            var cites = result['cites'];
+            if (!cites[domain]) {
+                cites[domain] = {};
+                cites[domain]["visit"] = 1;
+                cites[domain]["time"] = 1;
+            } else {
+                cites[domain]['time'] += 1;
+                console.log(result['cites'][domain]['time']);
+           }
+           var setter = {};
+           setter[storageKey] = cites;
+           chrome.storage.sync.set(setter, function() {});
         });
     } else {
         console.log('User is not active on ' + domain);
@@ -33,12 +42,14 @@ function getCurrentTab() {
     }, function(tabs) {
         var hostname = new URL(tabs[0].url).hostname;
         var found = false;
-        getURL(tabs[0].url);
+        //getURL(tabs[0].url);
+        if (hostname) {
         clearInterval(interval);
         interval = null;
         interval = setInterval(function() {
-            updateURL();
-        }, 5000);
+            updateTime(hostname);
+        }, 5000); 
+      }
     });
 };
 
@@ -114,3 +125,6 @@ function msToTime(duration) {
         return days + " Days"
     }
 }
+getCurrentTab();
+chrome.tabs.onUpdated.addListener(getCurrentTab);
+chrome.tabs.onActivated.addListener(getCurrentTab);
