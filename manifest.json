@@ -22,7 +22,6 @@
   },
   "permissions": [
     "chrome://favicon/",
-    "history",
     "storage",
     "tabs"
   ],

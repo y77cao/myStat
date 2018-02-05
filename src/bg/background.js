@@ -1,44 +1,60 @@
-// if you checked "fancy-settings" in extensionizr.com, uncomment this lines
+var interval = null;
+var currtab = {};
+var userActive = true;
 
-// var settings = new Store("settings", {
-//     "sample_setting": "This is how you use Store.js to remember values"
-// });
+/* Data structure:
+   pageviews: Int,
+   cites: {
+     domain: {
+       visit: Int,
+       time: Int
+     }
+   }
+*/
+
+/* Time spent */
+function updateTime(domain) {
+    if (userActive) {
+        console.log('User is active on ' + domain;
+        chrome.storage.sync.get('cites', function(result) {
+            result['cites'][domain]['time'] += 1;
+
+            chrome.storage.sync.set(data);
+        });
+    } else {
+        console.log('User is not active on ' + domain);
+    }
+};
+//TODO
+function getCurrentTab() {
+    chrome.tabs.query({
+        currentWindow: true,
+        active: true
+    }, function(tabs) {
+        var hostname = new URL(tabs[0].url).hostname;
+        var found = false;
+        getURL(tabs[0].url);
+        clearInterval(interval);
+        interval = null;
+        interval = setInterval(function() {
+            updateURL();
+        }, 5000);
+    });
+};
+
+/* Page visits */
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if(request.type) {
             switch(request.type) {
                 case "pageLoad":
                     incrementValue('pageviews', 1);
-                    if(request.domain) incrementSubCategory('cites', request.domain, 1);
+                    if (request.domain && request.currtime) incrementSubCategory('cites', request.domain, request.currtime);
                     break;
             }
         }
         sendResponse();
 });
-/*
-function StatTracker(name, velocityEnabled) {
-    this.name = name;
-    this.timer = null;
-    this.valueWithinInterval = 0;
-    this.minValue = 50;
-}
-
-var statTrackers = {
-    pageviews: new StatTracker('pageviews'),
-};
-
-function incrementStatistic(statisticName) {
-    if(!statTrackers[statisticName]) {
-    	let temp = new StatTracker(statisticName);
-        statTrackers[statisticName] = temp;
-    }
-    var tracker = statTrackers[statisticName];
-    tracker.valueWithinInterval++;
-
-    incrementValue(tracker.name, 1);
-    statTrackers[statisticName] = tracker; //Just in case...
-}
-*/
 
 function incrementValue(storageKey, amount) {
     chrome.storage.sync.get(storageKey, function(result) {
@@ -55,19 +71,23 @@ function incrementValue(storageKey, amount) {
 
 }
 
-function incrementSubCategory(storageKey, domain, amount) {
+function incrementSubCategory(storageKey, domain, time) {
     chrome.storage.sync.get(storageKey, function(result) {
         if(!result || !result[storageKey]) {
             var setter = {};
             setter[storageKey] = {};
-            setter[storageKey][domain] = 1;
+            setter[storageKey][domain] = {};
+            setter[storageKey][domain]["visit"] = 1;
+            setter[storageKey][domain]["time"] = 0;
             chrome.storage.sync.set(setter, function() {});
         } else {
             var cites = result[storageKey];
             if (!cites[domain]) {
-                cites[domain] = 1;
+                cites[domain] = {};
+                cites[domain]["visit"] = 1;
+                cites[domain]["time"] = 0;
             } else {
-                ++cites[domain];
+                ++cites[domain]["visit"];
             }
             var setter = {};
             setter[storageKey] = cites;
@@ -76,4 +96,21 @@ function incrementSubCategory(storageKey, domain, amount) {
         console.log("Visited: "+ domain);
     })
 
+}
+
+function msToTime(duration) {
+    var seconds = (duration / 1000).toFixed(1);
+    var minutes = (duration / (1000 * 60)).toFixed(1);
+    var hours = (duration / (1000 * 60 * 60)).toFixed(1);
+    var days = (duration / (1000 * 60 * 60 * 24)).toFixed(1);
+
+    if (seconds < 60) {
+        return seconds + " Sec";
+    } else if (minutes < 60) {
+        return minutes + " Min";
+    } else if (hours < 24) {
+        return hours + " Hrs";
+    } else {
+        return days + " Days"
+    }
 }
