@@ -18,10 +18,12 @@ var app = new Vue({
     showVisit: function () {
       this.visitshown = true;
       this.timeshown = false;
+      this.displayData();
     },
     showTime: function () {
     	this.visitshown = false;
     	this.timeshown = true;
+      this.displayData();
     },
     getData: function(category) {
       const sr = this.saveResult;
@@ -34,12 +36,13 @@ var app = new Vue({
       else if (typeof data === 'object') {
         this.citeListVisit = data && Object.keys(data).length >= 10? this.formatData(data, 'visit'): [];
         this.citeListTime = data && Object.keys(data).length >= 10? this.formatData(data, 'time'): [];
-        renderBars(this.citeListVisit);
+        renderBars(this.citeListVisit, 'container1');
+        renderBars(this.citeListTime, 'container2');
       }
     },
     //CHANGE THIS
     formatData: function(data, type) {
-      var sorted = this.sortObject(data);
+      var sorted = this.sortObject(data,type);
       var len = sorted.length;
       var others = 0;
       var res = [];
@@ -54,10 +57,16 @@ var app = new Vue({
       res.push(["others", others]);
       return res;
     },
-    sortObject: function(obj) {
+    sortObject: function(obj, type) {
       var sortable = [];
-      for (var i in obj) {
-         sortable.push([i, obj[i]['visit'], obj[i]['time']]);
+      if (type == 'visit') {
+          for (var i in obj) {
+          sortable.push([i, obj[i]['visit']]);
+         }
+      } else if (type == 'time') {
+          for (var i in obj) {
+          sortable.push([i, obj[i]['time']]);
+         }
       }
 
       sortable.sort(function(a, b) {return b[1] - a[1];});
@@ -66,10 +75,10 @@ var app = new Vue({
     displayData: function() {
       switch (this.visitsdisplay) {
         case 'Bars':
-          renderBars(this.citeListVisit);
+          this.visitshown? renderBars(this.citeListVisit, 'container1'): renderBars(this.citeListTime, 'container2');
           break;
         case 'Pies':
-          renderPies(this.citeListVisit);
+          this.visitshown? renderPies(this.citeListVisit, 'container1'): renderPies(this.citeListTime, 'container2');
           break;
       }
     }

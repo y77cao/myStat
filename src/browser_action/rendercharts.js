@@ -2,8 +2,8 @@ const COLORS = ['#7a91f9', '#f9ad5c', '#72c8ff', '#c899ff',
                 '#faa0ff', '#84e4ee', '#47edb0', '#c0ea27', 
                 '#ffb8aa', '#fff284', '#ff7777']
 
-function renderBars(data) {
-	var myChart = Highcharts.chart('container', {
+function renderBars(data, container) {
+	var myChart = Highcharts.chart(container, {
 		    colors: COLORS,
         chart: {
             type: 'bar'
@@ -49,8 +49,8 @@ function renderBars(data) {
   })
 }
 
-function renderPies(data) {
-  var myChart = Highcharts.chart('container', {
+function renderPies(data, container) {
+  var myChart = Highcharts.chart(container, {
       chart: {
           plotBackgroundColor: null,
           plotBorderWidth: null,
