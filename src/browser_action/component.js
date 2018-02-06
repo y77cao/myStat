@@ -13,7 +13,21 @@ var app = new Vue({
     visitsdisplay: function(newv, oldv) {
          this.displayData();
       }
+  },
+  computed: {
+    pageVisitTab: function() {
+      return {
+           'active-tab': this.visitshown,
+           'inactive-tab': !this.visitshown
+         }
     },
+    timeSpentTab: function() {
+      return {
+           'active-tab': this.timeshown,
+           'inactive-tab': !this.timeshown
+         }    
+    }
+  },
   methods: {
     showVisit: function () {
       this.visitshown = true;

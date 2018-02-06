@@ -12,7 +12,7 @@
 	#tab {
 		width: 100%;
 		height: 30px;
-	}
+	} 
 	#tab button {
 		float: left;
 		width: 50%;
@@ -21,9 +21,8 @@
         outline: none;
         cursor: pointer;
         transition: 0.3s;
-        background: grey;
         border-radius: 20px 20px 0 0;
-	}
+	} /*
 	#tab button:nth-child(1) {
 		background-color: #fff;
 	    box-shadow: 14px -6px 25px -7px rgba(199,199,199,0.69);
@@ -32,12 +31,22 @@
 	#tab button:nth-child(2) {
 		background-color: #f2f2f2;
 	}
+    */
+	.active-tab {
+		background-color: #fff;
+	    box-shadow: 14px -6px 25px -7px rgba(199,199,199,0.69);
+	    z-index: 4;
+	}
+
+	.inactive-tab {
+		background-color: #f2f2f2;
+	}
 </style>
 
 <div id="app">
 	<div id="tab">
-		<button id="page-visit-tab" v-on:click="showVisit">Page visits</button>
-	    <button id="time-spent-tab" v-on:click="showTime">Time spent</button>
+		<button id="page-visit-tab" v-on:click="showVisit" v-bind:class="pageVisitTab">Page visits</button>
+	    <button id="time-spent-tab" v-on:click="showTime" v-bind:class="timeSpentTab">Time spent</button>
 	</div>
     <div id="select-display">
     	View as:
