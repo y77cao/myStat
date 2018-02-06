@@ -17,6 +17,14 @@ function updateTime(domain) {
     if (userActive) {
         console.log('User is active on ' + domain);
         chrome.storage.sync.get('cites', function(result) {
+        if(!result || !result['cites']) {
+            var setter = {};
+            setter['cites'] = {};
+            setter['cites'][domain] = {};
+            setter['cites'][domain]["visit"] = 1;
+            setter['cites'][domain]["time"] = 1;
+            chrome.storage.sync.set(setter, function() {});
+        } else {
             var cites = result['cites'];
             if (!cites[domain]) {
                 cites[domain] = {};
@@ -24,12 +32,13 @@ function updateTime(domain) {
                 cites[domain]["time"] = 1;
             } else {
                 cites[domain]['time'] += 1;
-                console.log(result['cites'][domain]['time']);
+                //console.log(result['cites'][domain]['time']);
            }
            var setter = {};
-           setter[storageKey] = cites;
+           setter['cites'] = cites;
            chrome.storage.sync.set(setter, function() {});
-        });
+        }
+      });
     } else {
         console.log('User is not active on ' + domain);
     }

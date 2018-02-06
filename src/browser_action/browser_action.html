@@ -39,27 +39,23 @@
 		<button id="page-visit-tab" v-on:click="showVisit">Page visits</button>
 	    <button id="time-spent-tab" v-on:click="showTime">Time spent</button>
 	</div>
+    <div id="select-display">
+    	View as:
+    	<select v-model="visitsdisplay">
+          <option>Bars</option>
+          <option>Pies</option>
+        </select>
+    </div>
 	<div id='content'>
 		<div id="page-visit-content" v-show="visitshown">
-		<!--	<div id="page-views">Total page views: {{ pageviews }}</div> -->
-		    <div id="select-display">
-		    	View as:
-		    	<select v-model="visitsdisplay">
-                  <option>Bars</option>
-                  <option>Pies</option>
-                </select>
-		    </div>
 			<div id="cites">
-				<!--
-				<ul id="cite-list">
-                  <li v-for="i in citeList">
-                    {{ i[0] }}: {{ i[1] }}
-                  </li>
-                </ul> -->
-                <div id="container" style="width:100%; height:500px;"></div>
+                <div id="container1" style="width:100%; height:500px;"></div>
 			</div>
 		</div>
-	    <div id="time-spent-content" v-show="timeshown">hehehe</div>
+	    <div id="time-spent-content" v-show="timeshown">
+			<div id="cites">
+                <div id="container2" style="width:100%; height:500px;"></div>
+	    </div>
 	</div>
 	
 </div>

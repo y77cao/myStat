@@ -5,7 +5,8 @@ var app = new Vue({
   	visitshown: true,
   	timeshown: false,
     pageviews: 0,
-    citeList: [],
+    citeListVisit: [],
+    citeListTime:[],
     visitsdisplay: 'Bars'
   },
   watch: {
@@ -31,11 +32,13 @@ var app = new Vue({
     saveResult: function(data) {
       if (typeof data === 'number') this.pageviews = data? data: 0;
       else if (typeof data === 'object') {
-        this.citeList = data && Object.keys(data).length >= 10? this.formatData(data): [];
-        renderBars(this.citeList);
+        this.citeListVisit = data && Object.keys(data).length >= 10? this.formatData(data, 'visit'): [];
+        this.citeListTime = data && Object.keys(data).length >= 10? this.formatData(data, 'time'): [];
+        renderBars(this.citeListVisit);
       }
     },
-    formatData: function(data) {
+    //CHANGE THIS
+    formatData: function(data, type) {
       var sorted = this.sortObject(data);
       var len = sorted.length;
       var others = 0;
@@ -54,7 +57,7 @@ var app = new Vue({
     sortObject: function(obj) {
       var sortable = [];
       for (var i in obj) {
-         sortable.push([i, obj[i]]);
+         sortable.push([i, obj[i]['visit'], obj[i]['time']]);
       }
 
       sortable.sort(function(a, b) {return b[1] - a[1];});
@@ -63,10 +66,10 @@ var app = new Vue({
     displayData: function() {
       switch (this.visitsdisplay) {
         case 'Bars':
-          renderBars(this.citeList);
+          renderBars(this.citeListVisit);
           break;
         case 'Pies':
-          renderPies(this.citeList);
+          renderPies(this.citeListVisit);
           break;
       }
     }
