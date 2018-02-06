@@ -1,10 +1,14 @@
-//var renderBars = require('rendercharts').renderBars;
+/* TODO:
+   recent history
+   clickable links
+   change time spent views
+*/
 var app = new Vue({
   el: '#app',
   data: {
   	visitshown: true,
   	timeshown: false,
-    pageviews: 0,
+    //pageviews: 0,
     citeListVisit: [],
     citeListTime:[],
     visitsdisplay: 'Bars'
@@ -51,7 +55,7 @@ var app = new Vue({
         this.citeListVisit = data && Object.keys(data).length >= 10? this.formatData(data, 'visit'): [];
         this.citeListTime = data && Object.keys(data).length >= 10? this.formatData(data, 'time'): [];
         renderBars(this.citeListVisit, 'container1');
-        renderBars(this.citeListTime, 'container2');
+        //renderBars(this.citeListTime, 'container2');
       }
     },
     //CHANGE THIS
@@ -98,7 +102,7 @@ var app = new Vue({
     }
   },
   created() {
-    this.getData('pageviews');
+    //this.getData('pageviews');
     this.getData('cites');
   } 
 })

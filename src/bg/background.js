@@ -43,7 +43,7 @@ function updateTime(domain) {
         console.log('User is not active on ' + domain);
     }
 };
-//TODO
+
 function getCurrentTab() {
     chrome.tabs.query({
         currentWindow: true,
@@ -119,10 +119,10 @@ function incrementSubCategory(storageKey, domain, time) {
 }
 
 function msToTime(duration) {
-    var seconds = (duration / 1000).toFixed(1);
-    var minutes = (duration / (1000 * 60)).toFixed(1);
-    var hours = (duration / (1000 * 60 * 60)).toFixed(1);
-    var days = (duration / (1000 * 60 * 60 * 24)).toFixed(1);
+    var seconds = duration;
+    var minutes = (duration / 60).toFixed(1);
+    var hours = (duration / 60 * 60).toFixed(1);
+    var days = (duration /  60 * 60 * 24).toFixed(1);
 
     if (seconds < 60) {
         return seconds + " Sec";

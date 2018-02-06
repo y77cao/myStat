@@ -22,16 +22,7 @@
         cursor: pointer;
         transition: 0.3s;
         border-radius: 20px 20px 0 0;
-	} /*
-	#tab button:nth-child(1) {
-		background-color: #fff;
-	    box-shadow: 14px -6px 25px -7px rgba(199,199,199,0.69);
-	    z-index: 4;
-	}
-	#tab button:nth-child(2) {
-		background-color: #f2f2f2;
-	}
-    */
+	} 
 	.active-tab {
 		background-color: #fff;
 	    box-shadow: 14px -6px 25px -7px rgba(199,199,199,0.69);
@@ -62,12 +53,17 @@
 			</div>
 		</div>
 	    <div id="time-spent-content" v-show="timeshown">
-			<div id="cites">
-                <div id="container2" style="width:100%; height:500px;"></div>
+			<div id="cites" style="width:100%; height:500px;">
+                <div v-for="cite in citeListTime">
+                	{{ cite[0] }} : {{ cite[1] }}
+                </div>
+	        </div>
+	        <div id="container2" style="width:100%; height:500px;"></div>
 	    </div>
-	</div>
 	
+    </div>
 </div>
+
 <script src="vue.js" type="text/javascript" charset="utf-8"></script>
 <script src="highcharts.js" type="text/javascript" charset="utf-8" async defer></script>
 <script src="rendercharts.js"></script>
