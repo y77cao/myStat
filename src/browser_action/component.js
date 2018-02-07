@@ -13,7 +13,8 @@ var app = new Vue({
     citeListVisit: [],
     citeListTime:[],
     visitsdisplay: 'Bars',
-    timedisplay: 'List'
+    timedisplay: 'List',
+    colors: COLORS.slice(0, 3)
   },
   watch: {
     visitsdisplay: function(newv, oldv) {
@@ -80,7 +81,7 @@ var app = new Vue({
         this.citeListTime = data && Object.keys(data).length >= 10? 
         this.formatData(data, 'time'): [];
 
-        renderBars(this.citeListVisit, 'container1');
+        renderBars(this.citeListVisit, 'container1', 'Website Visits');
         //renderBars(this.citeListTime, 'container2');
       }
     },
@@ -121,9 +122,9 @@ var app = new Vue({
     convertTime: function(duration) {
       var seconds = duration;
       var minutes = (duration / 60).toFixed(1);
-      var hours = (duration / 60 * 60).toFixed(1);
-      var days = (duration /  60 * 60 * 24).toFixed(1);
-
+      var hours = (duration / (60 * 60)).toFixed(1);
+      var days = (duration /  (60 * 60 * 24)).toFixed(1);
+      //console.log("sec: " + seconds + ", min: " + minutes + ", hours: " + hours + ", days:" + days);
       if (seconds < 60) {
           return [seconds, " Sec"];
       } else if (minutes < 60) {

@@ -1,6 +1,6 @@
-const COLORS = ['#7a91f9', '#f9ad5c', '#72c8ff', '#c899ff', 
-                '#faa0ff', '#84e4ee', '#47edb0', '#c0ea27', 
-                '#ffb8aa', '#fff284', '#ff7777']
+const COLORS = ['#7a91f9', '#f9ad5c', '#ff7777', '#72c8ff', '#c899ff', 
+                '#faa0ff', '#84e4ee', '#47edb0', '#c0ea27', '#fff284',
+                '#ffb8aa'];
 
 function renderBars(data, container, title) {
 	var myChart = Highcharts.chart(container, {
