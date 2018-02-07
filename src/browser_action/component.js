@@ -1,7 +1,7 @@
 /* TODO:
    recent history
    clickable links
-   change time spent views
+   style selector
 */
 var app = new Vue({
   el: '#app',
@@ -63,6 +63,10 @@ var app = new Vue({
       this.visitshown = false;
       this.timeshown = false;
       this.historyshown = true;
+    },
+
+    newTab: function (domain) {
+      chrome.tabs.create({url:"https://" + domain});
     },
 
     getData: function(category) {
