@@ -15,7 +15,7 @@
 	} 
 	#tab button {
 		float: left;
-		width: 50%;
+		width: 33.3%;
 		padding: 1%;
         border: none;
         outline: none;
@@ -36,29 +36,43 @@
 
 <div id="app">
 	<div id="tab">
+		<button id="history-tab" v-on:click="showHistory" v-bind:class="historyTab">Recent History</button>
 		<button id="page-visit-tab" v-on:click="showVisit" v-bind:class="pageVisitTab">Page visits</button>
 	    <button id="time-spent-tab" v-on:click="showTime" v-bind:class="timeSpentTab">Time spent</button>
 	</div>
-    <div id="select-display">
-    	View as:
-    	<select v-model="visitsdisplay">
-          <option>Bars</option>
-          <option>Pies</option>
-        </select>
-    </div>
+
 	<div id='content'>
+
 		<div id="page-visit-content" v-show="visitshown">
+            <div id="select-display">
+            	View as:
+            	<select v-model="visitsdisplay">
+                  <option>Bars</option>
+                  <option>Pies</option>
+                </select>
+            </div>
 			<div id="cites">
                 <div id="container1" style="width:100%; height:500px;"></div>
 			</div>
 		</div>
+
 	    <div id="time-spent-content" v-show="timeshown">
-			<div id="cites" style="width:100%; height:500px;">
+            <div id="select-display">
+            	View as:
+            	<select v-model="timedisplay">
+                  <option>List</option>
+                  <option>Pies</option>
+                </select>
+            </div>
+			<div id="cites" style="width:100%; height:500px;" v-show="timedisplay=='List'">
                 <div v-for="cite in citeListTime">
-                	{{ cite[0] }} : {{ cite[1] }}
+                	<div>{{ cite[0] }} </div>
+                	<div>{{ convertTime(cite[1])[0] }}
+                		 <span>{{ convertTime(cite[1])[1] }}</span>
+                	</div>
                 </div>
 	        </div>
-	        <div id="container2" style="width:100%; height:500px;"></div>
+	        <div id="container2" style="width:100%; height:500px;" v-show="timedisplay!=='List'"></div>
 	    </div>
 	
     </div>

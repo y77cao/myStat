@@ -8,16 +8,21 @@ var app = new Vue({
   data: {
   	visitshown: true,
   	timeshown: false,
+    historyshown: false,
     //pageviews: 0,
     citeListVisit: [],
     citeListTime:[],
-    visitsdisplay: 'Bars'
+    visitsdisplay: 'Bars',
+    timedisplay: 'List'
   },
   watch: {
     visitsdisplay: function(newv, oldv) {
-         this.displayData();
+         this.displayData('visit');
+      },
+    timedisplay: function(newv, oldv) {
+         this.displayData('time');
       }
-  },
+  }, 
   computed: {
     pageVisitTab: function() {
       return {
@@ -30,35 +35,56 @@ var app = new Vue({
            'active-tab': this.timeshown,
            'inactive-tab': !this.timeshown
          }    
+    },
+    historyTab: function() {
+      return {
+           'active-tab': this.historyshown,
+           'inactive-tab': !this.historyshown
+         }    
     }
   },
   methods: {
     showVisit: function () {
-      this.visitshown = true;
       this.timeshown = false;
-      this.displayData();
+      this.historyshown = false;
+      this.visitshown = true;
+      this.displayData('visit');
     },
+
     showTime: function () {
     	this.visitshown = false;
+      this.historyshown = false;
     	this.timeshown = true;
-      this.displayData();
+      this.displayData('time');
     },
+
+    showHistory: function () {
+      this.visitshown = false;
+      this.timeshown = false;
+      this.historyshown = true;
+    },
+
     getData: function(category) {
       const sr = this.saveResult;
       chrome.storage.sync.get(category, function(result) {
             sr(result[category]);
         });
     },
+
     saveResult: function(data) {
       if (typeof data === 'number') this.pageviews = data? data: 0;
       else if (typeof data === 'object') {
-        this.citeListVisit = data && Object.keys(data).length >= 10? this.formatData(data, 'visit'): [];
-        this.citeListTime = data && Object.keys(data).length >= 10? this.formatData(data, 'time'): [];
+        this.citeListVisit = data&& Object.keys(data).length >= 10? 
+        this.formatData(data, 'visit'): [];
+
+        this.citeListTime = data && Object.keys(data).length >= 10? 
+        this.formatData(data, 'time'): [];
+
         renderBars(this.citeListVisit, 'container1');
         //renderBars(this.citeListTime, 'container2');
       }
     },
-    //CHANGE THIS
+
     formatData: function(data, type) {
       var sorted = this.sortObject(data,type);
       var len = sorted.length;
@@ -75,6 +101,7 @@ var app = new Vue({
       res.push(["others", others]);
       return res;
     },
+
     sortObject: function(obj, type) {
       var sortable = [];
       if (type == 'visit') {
@@ -90,13 +117,32 @@ var app = new Vue({
       sortable.sort(function(a, b) {return b[1] - a[1];});
       return sortable;
     },
-    displayData: function() {
-      switch (this.visitsdisplay) {
-        case 'Bars':
-          this.visitshown? renderBars(this.citeListVisit, 'container1'): renderBars(this.citeListTime, 'container2');
+
+    convertTime: function(duration) {
+      var seconds = duration;
+      var minutes = (duration / 60).toFixed(1);
+      var hours = (duration / 60 * 60).toFixed(1);
+      var days = (duration /  60 * 60 * 24).toFixed(1);
+
+      if (seconds < 60) {
+          return [seconds, " Sec"];
+      } else if (minutes < 60) {
+          return [minutes, " Min"];
+      } else if (hours < 24) {
+          return [hours, " Hrs"];
+      } else {
+          return [days, " Days"];
+      }
+    },
+
+    displayData: function(view) {
+      switch (view) {
+        case 'visit':
+          this.visitsdisplay === 'Bars'? renderBars(this.citeListVisit, 'container1', 'Website Visits')
+                                       : renderPies(this.citeListVisit, 'container1', 'Website Visits');
           break;
-        case 'Pies':
-          this.visitshown? renderPies(this.citeListVisit, 'container1'): renderPies(this.citeListTime, 'container2');
+        case 'time':
+          this.timedisplay === 'List'? '' : renderPies(this.citeListTime, 'container2', 'Time Spent on Websites');
           break;
       }
     }

@@ -118,22 +118,6 @@ function incrementSubCategory(storageKey, domain, time) {
 
 }
 
-function msToTime(duration) {
-    var seconds = duration;
-    var minutes = (duration / 60).toFixed(1);
-    var hours = (duration / 60 * 60).toFixed(1);
-    var days = (duration /  60 * 60 * 24).toFixed(1);
-
-    if (seconds < 60) {
-        return seconds + " Sec";
-    } else if (minutes < 60) {
-        return minutes + " Min";
-    } else if (hours < 24) {
-        return hours + " Hrs";
-    } else {
-        return days + " Days"
-    }
-}
 getCurrentTab();
 chrome.tabs.onUpdated.addListener(getCurrentTab);
 chrome.tabs.onActivated.addListener(getCurrentTab);

@@ -2,14 +2,14 @@ const COLORS = ['#7a91f9', '#f9ad5c', '#72c8ff', '#c899ff',
                 '#faa0ff', '#84e4ee', '#47edb0', '#c0ea27', 
                 '#ffb8aa', '#fff284', '#ff7777']
 
-function renderBars(data, container) {
+function renderBars(data, container, title) {
 	var myChart = Highcharts.chart(container, {
 		    colors: COLORS,
         chart: {
             type: 'bar'
         },
         title: {
-            text: 'Website Visits'
+            text: title
         },
         xAxis: {
             type: 'category',
@@ -49,7 +49,7 @@ function renderBars(data, container) {
   })
 }
 
-function renderPies(data, container) {
+function renderPies(data, container, title) {
   var myChart = Highcharts.chart(container, {
       chart: {
           plotBackgroundColor: null,
@@ -58,10 +58,10 @@ function renderPies(data, container) {
           type: 'pie'
       },
       title: {
-          text: 'Website Visits'
+          text: title
       },
       tooltip: {
-          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          pointFormat: 'percentage: <b>{point.percentage:.1f}%</b>'
       },
       plotOptions: {
           pie: {
