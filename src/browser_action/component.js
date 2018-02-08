@@ -1,6 +1,7 @@
 /* TODO:
    recent history
    clickable links??
+   Show collecting data when data is not enough(< 10 entries)
 */
 var app = new Vue({
   el: '#app',
@@ -11,6 +12,7 @@ var app = new Vue({
     //pageviews: 0,
     citeListVisit: [],
     citeListTime:[],
+    history: [],
     visitsdisplay: 'Bars',
     timedisplay: 'List',
     colors: COLORS.slice(0, 3)
@@ -71,13 +73,19 @@ var app = new Vue({
     getData: function(category) {
       const sr = this.saveResult;
       chrome.storage.sync.get(category, function(result) {
-            sr(result[category]);
+            sr(result[category], 'object');
         });
     },
 
-    saveResult: function(data) {
-      if (typeof data === 'number') this.pageviews = data? data: 0;
-      else if (typeof data === 'object') {
+    getHistory: function() {
+      const sr = this.saveResult;
+      chrome.history.search({text: '', maxResults: 10}, function(data) {
+            sr(data, 'array');
+       });
+    },
+
+    saveResult: function(data, type) {
+      if (type === 'object') {
         this.citeListVisit = data&& Object.keys(data).length >= 10? 
         this.formatData(data, 'visit'): [];
 
@@ -85,7 +93,11 @@ var app = new Vue({
         this.formatData(data, 'time'): [];
 
         renderBars(this.citeListVisit, 'container1', 'Website Visits');
-        //renderBars(this.citeListTime, 'container2');
+      } else if (type === 'array') {
+        var len = data.length;
+        for (var i = 0; i < len; ++i) {
+          this.history.push(data[i].title, data[i].url);
+        }
       }
     },
 
@@ -154,5 +166,6 @@ var app = new Vue({
   created() {
     //this.getData('pageviews');
     this.getData('cites');
+    this.getHistory();
   } 
 })

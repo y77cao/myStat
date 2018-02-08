@@ -115,6 +115,10 @@
         width: 70px;
         height: 20px;
     }
+
+    select#select:focus {
+    	outline: none;
+    }
 </style>
 
 <div id="app">
@@ -125,6 +129,10 @@
 	</div>
 
 	<div id='content'>
+
+		<div id="history-content" v-show="historyshown">
+			
+		</div>
 
 		<div id="page-visit-content" v-show="visitshown">
             <div id="select-display">

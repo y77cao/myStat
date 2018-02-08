@@ -23,7 +23,8 @@
   "permissions": [
     "chrome://favicon/",
     "storage",
-    "tabs"
+    "tabs",
+    "history"
   ],
   "content_scripts": [
     {
