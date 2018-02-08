@@ -100,6 +100,21 @@
         0% {opacity: 0;}
         100% {opacity: 1;}
     }
+
+    select#select {
+    	-webkit-appearance: button;
+        -webkit-padding-end: 20px;
+        -webkit-padding-start: 2px;
+        -webkit-user-select: none;
+        border: none;
+        padding-left: 15px;
+        background-image: url('./arrow.png');
+        background-color: #f2f2f2;
+        background-position: 97% center;
+        background-repeat: no-repeat;
+        width: 70px;
+        height: 20px;
+    }
 </style>
 
 <div id="app">
@@ -114,7 +129,7 @@
 		<div id="page-visit-content" v-show="visitshown">
             <div id="select-display">
             	View as:
-            	<select v-model="visitsdisplay">
+            	<select id="select" v-model="visitsdisplay">
                   <option>Bars</option>
                   <option>Pies</option>
                 </select>
@@ -127,7 +142,7 @@
 	    <div id="time-spent-content" v-show="timeshown">
             <div id="select-display">
             	View as:
-            	<select v-model="timedisplay">
+            	<select id="select" v-model="timedisplay">
                   <option>List</option>
                   <option>Pies</option>
                 </select>

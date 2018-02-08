@@ -1,7 +1,6 @@
 /* TODO:
    recent history
-   clickable links
-   style selector
+   clickable links??
 */
 var app = new Vue({
   el: '#app',
