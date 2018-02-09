@@ -38,18 +38,7 @@ chrome.runtime.sendMessage({}, function(response) {
             clearInterval(readyStateCheckInterval);
         }
     }, 10);
-}); /*
-var oldURL = window.location.href;
-var urlChangeHandler = setInterval(checkURLChange, 500);
-
-function checkURLChange() {
-    var newURL = window.location.href;
-    if (newURL !== oldURL) {
-        documentReady();
-        console.log("URL changed");
-        oldURL = newURL;
-    }
-} */
+});
 
 function documentReady() {
     chrome.runtime.sendMessage({

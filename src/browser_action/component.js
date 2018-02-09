@@ -95,7 +95,8 @@ var app = new Vue({
       } else if (type === 'array') {
         var len = data.length;
         for (var i = 0; i < len; ++i) {
-          this.history.push([data[i].title, data[i].url]);
+          var title = data[i].title? data[i].title: 'Untitled';
+          this.history.push([title, data[i].url]);
         }
       }
     },
@@ -138,7 +139,6 @@ var app = new Vue({
       var minutes = (duration / 60).toFixed(1);
       var hours = (duration / (60 * 60)).toFixed(1);
       var days = (duration /  (60 * 60 * 24)).toFixed(1);
-      //console.log("sec: " + seconds + ", min: " + minutes + ", hours: " + hours + ", days:" + days);
       if (seconds < 60) {
           return [seconds, " Sec"];
       } else if (minutes < 60) {
