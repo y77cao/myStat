@@ -1,14 +1,9 @@
-/* TODO:
-   recent history
-   clickable links??
-   Show collecting data when data is not enough(< 10 entries)
-*/
 var app = new Vue({
   el: '#app',
   data: {
-  	visitshown: true,
+  	visitshown: false,
   	timeshown: false,
-    historyshown: false,
+    historyshown: true,
     //pageviews: 0,
     citeListVisit: [],
     citeListTime:[],
@@ -67,7 +62,11 @@ var app = new Vue({
     },
 
     newTab: function (domain) {
-      chrome.tabs.create({url:"https://" + domain});
+      if (domain.startsWith('http://') || domain.startsWith('https://')) {
+           chrome.tabs.create({url: domain});
+       } else {
+           chrome.tabs.create({url:"https://" + domain});
+       }
     },
 
     getData: function(category) {
@@ -79,7 +78,7 @@ var app = new Vue({
 
     getHistory: function() {
       const sr = this.saveResult;
-      chrome.history.search({text: '', maxResults: 10}, function(data) {
+      chrome.history.search({text: '', maxResults: 8}, function(data) {
             sr(data, 'array');
        });
     },

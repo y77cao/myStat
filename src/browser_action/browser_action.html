@@ -7,9 +7,12 @@
 		font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
 		font-size: 12px;
 	}
-	h1 {
-		font-size: 2em;
+	#history-content, #page-visit-content, #time-spent-content {
+		width: 100%;
+		height: 544px;
+		position: relative;
 	}
+
 	#tab {
 		width: 100%;
 		height: 30px;
@@ -36,8 +39,8 @@
 
 	#select-display {
 		position: absolute;
-		top: 55px;
-		left: 60px;
+		top: 10px;
+		left: 50px;
 		z-index: 9;
 	}
 
@@ -50,14 +53,14 @@
 		font-size: 18px;
 	}
 
-	#time-spent-content > #cite-wrapper,  #time-spent-content > #cites {
+	#cite-wrapper,  #cite-wrapper > #cites {
 		color: #fff;
 		height: 100%;
 		animation-name: fadeIn;
         animation-duration: 0.5s;
 	}
 
-	#time-spent-content > #cite-wrapper > #cites > div {
+	#cite-wrapper > #cites > div {
 		height: 7%;
 		width: 100%;
 		margin-top: 1.5%;
@@ -65,12 +68,12 @@
         transition: all .5s ease-in-out;
 	}
 
-	#time-spent-content > #cite-wrapper > #cites > div:hover {
+	#cite-wrapper > #cites > div:hover {
 		transform: scale(1.05);
         cursor: pointer;
 	}
 
-	#time-spent-content > #cite-wrapper > #cites > div > div {
+	#cite-wrapper > #cites > div > div {
 		height: 100%;
 		width: 30%;
 		line-height: 35px;
@@ -127,7 +130,7 @@
 	}
 
 	#history-list > div {
-		height: 9%;
+		height: 53px;
 		width: 100%;
 		margin-top: 1.5%;
 	    box-shadow: 7px 3px 12px 0px rgba(0,0,0,0.2);
@@ -149,11 +152,39 @@
 
 	#history-title {
 		font-size: 16px;
-		padding: 5px;
+		padding: 6px;
 	}
 
 	#history-url {
-		font-size: 11px;
+		font-size: 10px;
+	}
+
+	#not-enough-data {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+	}
+
+	#collect-img {
+		width: 200px;
+		height: 200px;
+		background: url("./collect.png");
+        background-size: cover;
+        margin: 5%;
+	}
+
+	#collect-history-img {
+		width: 200px;
+		height: 200px;
+		background: url("./history.png");
+        background-size: cover;
+        margin: 5%;
+	}
+
+	#collect-text {
+		font-size: 16px;
+		color: #333333;
 	}
 </style>
 
@@ -169,49 +200,65 @@
 		<div id="history-content" v-show="historyshown">
 			<div style="width:100%; height:544px;">
             	<div id="title">My Recent History</div>
-			    <div id="history-list" style="width:100%; height:100%;">
+			    <div id="history-list" v-show="history.length">
                     <div v-for="(index, i) in history" v-bind:style="{backgroundColor: colors[index%3]}" v-on:click="newTab(i[1])">
                     	<div id="history-title">{{ i[0] }} </div>
                     	<div id="history-url">{{ i[1] }}
                     	</div>
                     </div>
 	            </div>
+	            <div v-show="!history.length" id="not-enough-data">
+	            	<div id="collect-history-img"></div>
+	            	<div id="collect-text">No history?? Start browsing!</div>
+	            </div>
 	        </div>
 		</div>
 
 		<div id="page-visit-content" v-show="visitshown">
-            <div id="select-display">
-            	View as:
-            	<select id="select" v-model="visitsdisplay">
-                  <option>Bars</option>
-                  <option>Pies</option>
-                </select>
-            </div>
-			<div id="cites">
-                <div id="container1" style="width:100%; height:544px;"></div>
+			<div v-show="citeListVisit.length >= 10">
+                <div id="select-display">
+                	View as:
+                	<select id="select" v-model="visitsdisplay">
+                      <option>Bars</option>
+                      <option>Pies</option>
+                    </select>
+                </div>
+			    <div id="cites">
+                    <div id="container1" style="width:100%; height:544px;"></div>
+			    </div>
+		    </div>
+			<div v-show="citeListVisit.length < 10" id="not-enough-data">
+				<div id="collect-img"></div>
+				<div id="collect-text">Not enough data...collecting</div>
 			</div>
 		</div>
 
 	    <div id="time-spent-content" v-show="timeshown">
-            <div id="select-display">
-            	View as:
-            	<select id="select" v-model="timedisplay">
-                  <option>List</option>
-                  <option>Pies</option>
-                </select>
-            </div>
-            <div id="cite-wrapper" v-show="timedisplay=='List'" style="width:100%; height:500px;">
-            	<div id="title">Time Spent on Websites</div>
-			    <div id="cites" style="width:100%; height:100%;">
-                    <div v-for="(index, cite) in citeListTime" v-bind:style="{backgroundColor: colors[index%3]}" v-on:click="newTab(cite[0])">
-                    	<div id="domain"><span>{{index+1}}.</span>{{ cite[0] }} </div>
-                    	<div id="time"><span>{{ convertTime(cite[1])[0] }}</span>
-                    		 {{ convertTime(cite[1])[1] }}
-                    	</div>
-                    </div>
+	    	<div v-show="citeListTime.length >= 10">
+                <div id="select-display">
+                	View as:
+                	<select id="select" v-model="timedisplay">
+                      <option>List</option>
+                      <option>Pies</option>
+                    </select>
+                </div>
+                <div id="cite-wrapper" v-show="timedisplay=='List'" style="width:100%;     height:500px;">
+                	<div id="title">Time Spent on Websites</div>
+			        <div id="cites" style="width:100%; height:100%;">
+                        <div v-for="(index, cite) in citeListTime" v-bind:style="    {backgroundColor: colors[index%3]}" v-on:click="newTab(cite[0])">
+                        	<div id="domain"><span>{{index+1}}.</span>{{ cite[0] }} </div>
+                        	<div id="time"><span>{{ convertTime(cite[1])[0] }}</span>
+                        		 {{ convertTime(cite[1])[1] }}
+                        	</div>
+                        </div>
+	                </div>
 	            </div>
+	            <div id="container2" style="width:100%; height:544px;" v-show="timedisplay!=='List'"></div>
 	        </div>
-	        <div id="container2" style="width:100%; height:544px;" v-show="timedisplay!=='List'"></div>
+	        <div v-show="citeListTime.length < 10" id="not-enough-data">
+	        	<div id="collect-img"></div>
+	        	<div id="collect-text">Not enough data...collecting</div>
+	        </div>
 	    </div>
 	
     </div>
