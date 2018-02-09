@@ -96,7 +96,7 @@ var app = new Vue({
       } else if (type === 'array') {
         var len = data.length;
         for (var i = 0; i < len; ++i) {
-          this.history.push(data[i].title, data[i].url);
+          this.history.push([data[i].title, data[i].url]);
         }
       }
     },
