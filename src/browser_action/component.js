@@ -71,7 +71,7 @@ var app = new Vue({
 
     getData: function(category) {
       const sr = this.saveResult;
-      chrome.storage.sync.get(category, function(result) {
+      chrome.storage.local.get(category, function(result) {
             sr(result[category], 'object');
         });
     },

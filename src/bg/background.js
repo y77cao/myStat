@@ -16,14 +16,14 @@ var userActive = true;
 function updateTime(domain) {
     if (userActive) {
         console.log('User is active on ' + domain);
-        chrome.storage.sync.get('cites', function(result) {
+        chrome.storage.local.get('cites', function(result) {
         if(!result || !result['cites']) {
             var setter = {};
             setter['cites'] = {};
             setter['cites'][domain] = {};
             setter['cites'][domain]["visit"] = 1;
             setter['cites'][domain]["time"] = 1;
-            chrome.storage.sync.set(setter, function() {});
+            chrome.storage.local.set(setter, function() {});
         } else {
             var cites = result['cites'];
             if (!cites[domain]) {
@@ -36,7 +36,7 @@ function updateTime(domain) {
            }
            var setter = {};
            setter['cites'] = cites;
-           chrome.storage.sync.set(setter, function() {});
+           chrome.storage.local.set(setter, function() {});
         }
       });
     } else {
@@ -77,7 +77,7 @@ chrome.runtime.onMessage.addListener(
 });
 
 function incrementValue(storageKey, amount) {
-    chrome.storage.sync.get(storageKey, function(result) {
+    chrome.storage.local.get(storageKey, function(result) {
         if(!result || !result[storageKey]) {
             result = 0;
         } else {
@@ -86,20 +86,20 @@ function incrementValue(storageKey, amount) {
         result += amount;
         var setter = {};
         setter[storageKey] = result;
-        chrome.storage.sync.set(setter, function() {});
+        chrome.storage.local.set(setter, function() {});
     })
 
 }
 
 function incrementSubCategory(storageKey, domain, time) {
-    chrome.storage.sync.get(storageKey, function(result) {
+    chrome.storage.local.get(storageKey, function(result) {
         if(!result || !result[storageKey]) {
             var setter = {};
             setter[storageKey] = {};
             setter[storageKey][domain] = {};
             setter[storageKey][domain]["visit"] = 1;
             setter[storageKey][domain]["time"] = 0;
-            chrome.storage.sync.set(setter, function() {});
+            chrome.storage.local.set(setter, function() {});
         } else {
             var cites = result[storageKey];
             if (!cites[domain]) {
@@ -111,7 +111,7 @@ function incrementSubCategory(storageKey, domain, time) {
             }
             var setter = {};
             setter[storageKey] = cites;
-            chrome.storage.sync.set(setter, function() {});
+            chrome.storage.local.set(setter, function() {});
         }
         console.log("Visited: "+ domain);
     })
